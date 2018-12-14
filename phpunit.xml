@@ -1,0 +1,17 @@
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/7.0/phpunit.xsd"
+    colors="true"
+    processIsolation="false"
+    stopOnError="true"
+    printerClass="KoansLib\KoanPrinter"
+    stopOnFailure="true"
+>
+
+    <testsuites>
+        <testsuite name="TlsKoans">
+            <directory suffix="Koans.php">koans/</directory>
+        </testsuite>
+    </testsuites>
+
+</phpunit>
