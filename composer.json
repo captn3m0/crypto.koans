@@ -1,0 +1,17 @@
+{
+    "name": "captn3m0/tls.koans",
+    "description":
+        "A collection of koans for learning everything TLS using practical scripts and code.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nemo",
+            "email": "me@captnemo.in"
+        }
+    ],
+    "require": {
+        "consolidation/robo": "^1.0.0",
+        "phpunit/phpunit": "^7"
+    }
+}
