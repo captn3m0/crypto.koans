@@ -4,7 +4,7 @@ namespace TlsKoans;
 
 defined('__') or define('__', null);
 
-class SetupKoans extends TestCase {
+class ASetupKoans extends TestCase {
 	public function testEnvironmentIsZen() {
 		$this->assertNotNull(`which openssl 2>/dev/null`);
 		$this->assertNotNull(`which docker 2>/dev/null`);

@@ -4,7 +4,7 @@ namespace TlsKoans;
 
 defined('__') or define('__', null);
 
-class FileFormatKoans extends TestCase {
+class CFileFormatKoans extends TestCase {
 
 	public function testPrivateKeyWasInPemFormat() {
 		$command = "openssl asn1parse -in files/1.key -inform PEM";

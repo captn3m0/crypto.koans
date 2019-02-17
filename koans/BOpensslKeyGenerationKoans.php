@@ -4,7 +4,7 @@ namespace TlsKoans;
 
 defined('__') or define('__', null);
 
-class OpensslKeyGenerationKoans extends TestCase {
+class BOpensslKeyGenerationKoans extends TestCase {
 
     const PASSPHRASE = 'changeme';
 
