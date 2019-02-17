@@ -19,22 +19,23 @@ class TestCase extends Base {
         $this->assertEquals($info1['key'], $info2['key']);
     }
 
+    // ! Change this function till you get it right
     protected function der2pem($der_data, $type = 'I DONT KNOW') {
-        // CHANGEME
+        // ! CHANGEME
         // Open a pem encoded file and figure out the correct chunk size
         $characters_per_line = 128;
         $encoded = base64_encode($der_data);
         $pem = trim(chunk_split($encoded, $characters_per_line, "\n"));
         $pem = <<<EOT
 -----BEGIN $type-----
-REMOVE ME
 $pem
-REMOVE ME
 -----END $type-----
 EOT;
         return $pem;
     }
 
+    // Simple helper function to strip whitespace
+    // and verify files match each other
     protected function verifyFilesMatch($f1, $f2) {
         $this->assertEquals(
             hash("sha256", trim(file_get_contents($f1))),

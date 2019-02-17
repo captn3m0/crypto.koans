@@ -12,6 +12,7 @@ class CFileFormatKoans extends TestCase {
 	}
 
 	// Convert the 1.key file from PEM format to DER
+    // Then fix a few lines below to figure out how the conversion works
 	public function testPrivateKeyConvertedToDerFormat() {
 		$command = "openssl asn1parse -in files/5.key -inform DER";
 
@@ -19,12 +20,11 @@ class CFileFormatKoans extends TestCase {
 		$this->validateCommandAgainstRegex($command, '/SEQUENCE/', "can't parse key");
         $derKeyContents = file_get_contents('files/5.key');
 
-        // See the existing 1.key file to figure out what goes in type
+        // !See the existing 1.key file to figure out what goes in type
         $type = "changeme";
 
-        // Convert the key, you will need to fix the der2pem function
+        // !Convert the key, you will need to fix the der2pem function
         // in TestCase.php to understand how it works
-
         $convertToPemContents = $this->der2pem($derKeyContents, $type);
         file_put_contents('files/5.pem', $convertToPemContents);
 
