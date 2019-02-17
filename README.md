@@ -4,10 +4,14 @@ A collection of koans for learning everything TLS using practical scripts and co
 
 _Target Audience_: People working with libcurl, libopenssl and having to deal with PKI. You should have a reasonable understanding of shell scripts and code.
 
-## Requirements
+# Requirements
 
-1.  A supported version of PHP installed (with composer)
-2.  A Unix/Mac system.
+-   `openssl version` (1.1.1a)
+-   `curl --version` (7.64.0)
+-   `php --version` (7.3.2)
+-   `php -m |grep -e openssl -e curl`
+-   `composer --version` (See <https://getcomposer.org/download/>) (1.8.4)
+-   `docker --version` (18.09.2-ce)
 
 ## Setup
 
