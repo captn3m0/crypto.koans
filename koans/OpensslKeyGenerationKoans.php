@@ -2,8 +2,6 @@
 
 namespace TlsKoans;
 
-use PHPUnit\Framework\TestCase;
-
 defined('__') or define('__', null);
 
 class OpensslKeyGenerationKoans extends TestCase {
@@ -61,10 +59,6 @@ class OpensslKeyGenerationKoans extends TestCase {
         $this->assertNotFalse($keyWithoutPassphrase, "Check your keys");
         $this->assertNotFalse($keyWithPassphrase, "Are you sure this key has a passphrase");
 
-        $info1 = openssl_pkey_get_details($keyWithPassphrase);
-        $info2 = openssl_pkey_get_details($keyWithoutPassphrase);
-
-        // Ensure that the public keys in 2 and 4 match!
-        $this->assertEquals($info1['key'], $info2['key']);
+        $this->verifyKeysMatch($keyWithPassphrase, $keyWithoutPassphrase);
     }
 }
