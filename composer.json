@@ -1,7 +1,6 @@
 {
-    "name": "captn3m0/tls.koans",
-    "description":
-        "A collection of koans for learning everything TLS using practical scripts and code.",
+    "name": "captn3m0/crypto.koans",
+    "description": "A collection of koans for learning everything TLS using practical scripts and code.",
     "type": "project",
     "license": "MIT",
     "authors": [
