@@ -45,7 +45,7 @@ _class: lead
 
 # Non-Goals
 
--   Understanding Crypto-Attacks
+-   Understanding all Crypto-Attacks (we'll discuss 2)
 -   Elliptic Curve Crypto
 -   crypto-currencies :money_mouth_face:
 
