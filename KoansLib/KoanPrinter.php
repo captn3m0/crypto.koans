@@ -25,7 +25,7 @@ class KoanPrinter extends CliTestDoxPrinter
 
     protected function printHeader(): void
     {
-        $this->write("\n\n");
+        $this->write("\n");
     }
 
     protected function printFooter(TestResult $result): void
@@ -55,7 +55,7 @@ class KoanPrinter extends CliTestDoxPrinter
             );
         } else {
             if ($result->wasSuccessful()) {
-                $color = 'fg-black, bg-yellow';
+                $color = 'bold,fg-black, bg-yellow';
 
                 if ($this->verbose || !$result->allHarmless()) {
                     $this->write("\n");
@@ -69,21 +69,21 @@ class KoanPrinter extends CliTestDoxPrinter
                 $this->write("\n");
 
                 if ($result->errorCount()) {
-                    $color = 'fg-white, bg-red';
+                    $color = 'bold,fg-white, bg-red';
 
                     $this->writeWithColor(
                         $color,
                         'Error: You have stumbled on your path, but you are capable of recovering!'
                     );
                 } elseif ($result->failureCount()) {
-                    $color = 'fg-white, bg-blue';
+                    $color = 'bold, fg-white, bg-blue';
 
                     $this->writeWithColor(
                         $color,
                         'You are making progress but have more to learn. Contemplate the message above further.'
                     );
                 } elseif ($result->warningCount()) {
-                    $color = 'fg-white, bg-blue';
+                    $color = 'bold,fg-white, bg-blue';
 
                     $this->writeWithColor(
                         $color,

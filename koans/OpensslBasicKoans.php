@@ -14,7 +14,7 @@ class OpensslBasicKoans extends TestCase {
 
     public function testOpensslVersion() {
         // Change Me
-        $command = "__";
+        $command = "version";
 
         exec("openssl $command 2>&1", $output);
 
