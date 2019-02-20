@@ -71,14 +71,22 @@ _class: lead
 1.  Have a browser open with Google (Lots of googling needed for this)
 2.  `git clone git@github.com/captn3m0/crypto.koans.git && cd crypto.koans`
 3.  `composer install`
-4.  `vendor/bin/phpunit`
-5.  `man openssl`, `man curl`
-
-🧘‍♀️🧘‍♂️
 
 ---
 
 # <!--fit--> Koans 💃
+
+---
+
+# **koan**
+
+_noun_, **plural ko·ans, ko·an.** _Zen._
+
+1. a nonsensical or paradoxical question to a student for which an answer is demanded, the stress of meditation on the question often being illuminating.
+
+---
+
+# <!--fit--> What is the colour of wind?
 
 ---
 
@@ -121,6 +129,18 @@ end
 
 -   ❗ Means you must do something here
 -   Keep a solutions.md file listing down commands as you run them
+
+---
+
+# Setup
+
+1.  Have a browser open with Google (Lots of googling needed for this)
+2.  `git clone git@github.com/captn3m0/crypto.koans.git && cd crypto.koans`
+3.  `composer install`
+4.  `vendor/bin/phpunit`
+5.  `man openssl`, `man curl`
+
+🧘‍♀️🧘‍♂️
 
 ---
 
