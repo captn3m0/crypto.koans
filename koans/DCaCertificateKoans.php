@@ -49,16 +49,16 @@ class DCaCertificateKoans extends TestCase {
      *
      * SUPERHINT: Use -subj as from previous hint
      */
-    public function testGenerateCsr() {
-        $csrSubject = openssl_csr_get_subject('file://files/1.csr');
-        $this->assertEquals('server.crypto.koans.invalid', $csrSubject['CN']);
+    public function testGenerateCsr($csr = '1.csr', $key = '1.key', $hostname = 'server.crypto.koans.invalid') {
+        $csrSubject = openssl_csr_get_subject("file://files/$csr");
+        $this->assertEquals($hostname, $csrSubject['CN']);
 
-        $public = openssl_csr_get_public_key('file://files/1.csr');
+        $public = openssl_csr_get_public_key("file://files/$csr");
         $publicKeyDetails = openssl_pkey_get_details($public);
 
         // Now we validate that $key matches the public key component of our private key
 
-        $private = openssl_pkey_get_private('file://files/1.key');
+        $private = openssl_pkey_get_private("file://files/$key");
         $privateKeyDetails = openssl_pkey_get_details($private);
 
         // The 'key' part only holds the public key
@@ -78,13 +78,13 @@ class DCaCertificateKoans extends TestCase {
      *
      * IMP: You will need to pass -CAcreateserial
      */
-    public function testCertificateSignedUsingCA() {
+    public function testCertificateSignedUsingCA($crt = '1.crt', $key = '1.key', $ca = 'ca.pem') {
         // Validate that the certificate and the key match
         // This compares the public key in the certificate
         // and the public key in the private key
         $this->assertTrue(openssl_x509_check_private_key(
-            'file://files/1.crt',
-            'file://files/1.key'
+            "file://files/$crt",
+            "file://files/$key"
         ));
 
         // Next, we need to validate that you indeed used the correct
@@ -94,7 +94,7 @@ class DCaCertificateKoans extends TestCase {
         // See https://stackoverflow.com/a/45625492
         //
         // The phpseclib code has proper support for this btw
-        exec("openssl verify -CAfile files/ca.pem files/1.crt", $output, $return);
+        exec("openssl verify -CAfile files/$ca files/$crt", $output, $return);
 
         $this->assertTrue($return === 0);
     }
@@ -147,30 +147,42 @@ class DCaCertificateKoans extends TestCase {
      * 2. Write the following block in that file:
      *
      * ```
-     * keyUsage =
-     * extendedKeyUsage = clientAuth
+     * extendedKeyUsage=clientAuth
+     * keyUsage=digitalSignature
      * ```
      *
      * 3. Generate a key with no passphrase called client.key
      * 4. Generate a CSR in files/client.csr (common name = `client.crypto.koans` (remember -subj))
-     * 5. Sign a certificate for files/client.key using ca.pem as the CA certificate
+     * 5. Pass the client.csr file to the person next to you.
+     *5b. Save the csr file you received to files/alice.csr
+     * 5. Sign a certificate for alice.csr using ca.pem as the CA certificate
      *    and ca.key as the ca.key (same as last test case), BUT:
      * 6. Pass an extra `-extfile client.cnf` parameter
-     * 7. Save the new certificate in files/client.crt
+     * 7. Save the new certificate in files/alice.crt
+     * 8. Return the certificate file back to the other person
+     *8b. Save the client certificate you received as files/client.pem
+     * 9. Give a copy of your ca.pem file to the other person
+     *10. Save the ca certificate you recieved as files/bob.pem
      */
 
     public function testGenerateClientCertificate() {
 
+        // Validate whether we generated our CSR correctly:
+        $this->testGenerateCsr("client.csr", "client.key", 'client.crypto.koans');
+
         // Now let us validate our client certificate
         $crt = 'file://files/client.crt';
 
-        $this->assertPurpose($crt, X509_PURPOSE_SSL_CLIENT, 'files/ca.pem', __LINE__, true);
-        $this->assertPurpose($crt, X509_PURPOSE_SSL_SERVER, 'files/ca.pem', __LINE__, false);
-        $this->assertPurpose($crt, X509_PURPOSE_NS_SSL_SERVER, 'files/ca.pem', __LINE__, false);
-        $this->assertPurpose($crt, X509_PURPOSE_SMIME_SIGN, 'files/ca.pem', __LINE__, false);
-        $this->assertPurpose($crt, X509_PURPOSE_SMIME_ENCRYPT, 'files/ca.pem', __LINE__, false);
-        $this->assertPurpose($crt, X509_PURPOSE_CRL_SIGN, 'files/ca.pem', __LINE__, false);
-        $this->assertPurpose($crt, X509_PURPOSE_ANY, 'files/ca.pem', __LINE__, true);
+        // We also test whether bob signed our certificate:
+        $this->testCertificateSignedUsingCA("client.crt", "client.key", "bob.pem");
+
+        $this->assertPurpose($crt, X509_PURPOSE_SSL_CLIENT, 'files/bob.pem', __LINE__, true);
+        $this->assertPurpose($crt, X509_PURPOSE_SSL_SERVER, 'files/bob.pem', __LINE__, false);
+        $this->assertPurpose($crt, X509_PURPOSE_NS_SSL_SERVER, 'files/bob.pem', __LINE__, false);
+        $this->assertPurpose($crt, X509_PURPOSE_SMIME_SIGN, 'files/bob.pem', __LINE__, false);
+        $this->assertPurpose($crt, X509_PURPOSE_SMIME_ENCRYPT, 'files/bob.pem', __LINE__, false);
+        $this->assertPurpose($crt, X509_PURPOSE_CRL_SIGN, 'files/bob.pem', __LINE__, false);
+        $this->assertPurpose($crt, X509_PURPOSE_ANY, 'files/bob.pem', __LINE__, true);
     }
 
     private function assertPurpose($certificate, $purpose, $ca, $line, $answer) {

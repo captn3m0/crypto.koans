@@ -253,7 +253,7 @@ openssl x509
 ## Step 1
 
 ```bash
-printf "extendedKeyUsage = clientAuth\nkeyUsage = " > client.cnf
+printf "extendedKeyUsage=clientAuth\nkeyUsage=digitalSignature" > client.cnf
 ```
 
 ---
@@ -297,3 +297,5 @@ openssl x509 -req -in files/client.csr
 ---
 
 # Where we're going
+
+# <!--fit--> :whale: :rocket:
