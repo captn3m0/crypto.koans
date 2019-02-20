@@ -124,13 +124,21 @@ end
 
 ---
 
+# <!--fit--> `vendor/bin/phpunit`
+
+---
+
 # `OpensslKeyGenerationKoans.php`
+
+`vendor/bin/phpunit --filter BOpensslKeyGenerationKoans`
 
 ## <!--fit--> Questions❓
 
 ---
 
 # `FileFormatKoans.php`
+
+`vendor/bin/phpunit --filter CFileFormatKoans`
 
 ## <!--fit--> Questions❓
 
@@ -145,3 +153,127 @@ end
 -   Signatures
 
 ---
+
+# `CA Certificates`
+
+`vendor/bin/phpunit --filter DCaCertificateKoans.php`
+
+---
+
+# <!--fit--> Generate A CA Certificate
+
+---
+
+# testCaCertificateExists
+
+```haskell
+openssl req -x509
+-newkey rsa:1024
+-keyout files/ca.key
+-nodes
+-out files/ca.pem
+-subj '/CN=crypto.koans.invalid'
+```
+
+---
+
+# <!--fit--> Generate a Certificate Signing Request
+
+---
+
+# <!--fit--> Generate a Certificate Signing Request
+
+```haskell
+openssl req -new
+-key files/1.key
+-subj '/CN=server.crypto.koans.invalid'
+-out files/1.csr
+```
+
+---
+
+# <!--fit--> Sign your CSR with your CA
+
+---
+
+# <!--fit--> Sign your CSR with your CA
+
+```haskell
+openssl x509 -req
+-in files/1.csr
+-CA files/ca.pem
+-CAkey files/ca.key
+-CAcreateserial
+-out files/1.crt
+```
+
+---
+
+# <!--fit--> What can a Certificate Do?
+
+---
+
+# What can a Certificate Do?
+
+```perl
+openssl x509
+-in google.pem
+-purpose
+-noout #Remove this and retry
+```
+
+---
+
+# <!--fit--> Generate a Client Certificate
+
+---
+
+# Generate a Client Certificate
+
+## Step 1
+
+```bash
+printf "extendedKeyUsage = clientAuth\nkeyUsage = " > client.cnf
+```
+
+---
+
+# Generate a Client Certificate
+
+## Step 1
+
+```bash
+printf "extendedKeyUsage = clientAuth\nkeyUsage = " > client.cnf
+```
+
+## Step 2
+
+```haskell
+openssl req -subj '/CN=client.crypto.koans'
+-key files/client.key
+-new
+-out files/client.csr
+
+openssl x509 -req -in files/client.csr
+-CA files/ca.pem
+-CAkey files/ca.key
+-CAcreateserial
+-extfile client.cnf
+-out files/client.crt
+```
+
+---
+
+# Theory Break 2
+
+---
+
+# What you Have
+
+1. Server (`1.key`, `1.csr`, `1.crt`)
+2. Client (`client.key`, `client.csr`, `client.crt`)
+3. CA (`ca.key`, `CA.pem`)
+
+---
+
+# Where we're going
