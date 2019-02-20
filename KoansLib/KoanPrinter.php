@@ -1,6 +1,6 @@
 <?php
 // This is borrowed from https://github.com/akoebbe/php_koans/blob/master/KoansLib/KoanPrinter.php
-// 
+//
 // Under MIT License
 namespace KoansLib;
 
@@ -66,6 +66,14 @@ class KoanPrinter extends CliTestDoxPrinter
                     'OK, but incomplete, skipped, or risky tests!'
                 );
             } else {
+                $msgs = [
+                    "mountains are merely mountains",
+                    "learn the rules so you know how to break them properly",
+                    "remember that silence is sometimes the best answer",
+                    "sleep is the best meditation",
+                    "when you lose, don't lose the lesson",
+                    "things are not what they appear to be: nor are they otherwise"
+                ];
                 $this->write("\n");
 
                 if ($result->errorCount()) {
@@ -73,6 +81,7 @@ class KoanPrinter extends CliTestDoxPrinter
 
                     $this->writeWithColor(
                         $color,
+                        $msgs[array_rand($msgs)] . PHP_EOL .
                         'Error: You have stumbled on your path, but you are capable of recovering!'
                     );
                 } elseif ($result->failureCount()) {
@@ -80,6 +89,7 @@ class KoanPrinter extends CliTestDoxPrinter
 
                     $this->writeWithColor(
                         $color,
+                        $msgs[array_rand($msgs)] . PHP_EOL .
                         'You are making progress but have more to learn. Contemplate the message above further.'
                     );
                 } elseif ($result->warningCount()) {
@@ -87,6 +97,7 @@ class KoanPrinter extends CliTestDoxPrinter
 
                     $this->writeWithColor(
                         $color,
+                        $msgs[array_rand($msgs)] . PHP_EOL .
                         'WARNINGS!'
                     );
                 }
