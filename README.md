@@ -12,6 +12,7 @@ _Target Audience_: People working with libcurl, libopenssl and having to deal wi
 -   `php -m |grep -e openssl -e curl`
 -   `composer --version` (See <https://getcomposer.org/download/>) (1.8.4)
 -   `docker --version` (18.09.2-ce)
+-   `libtasn` (`brew install libtasn1`) (4.13)
 
 ## Setup
 
@@ -22,6 +23,8 @@ _Target Audience_: People working with libcurl, libopenssl and having to deal wi
 3.  Understanding File Formats in Crypto
 4.  Curl Basics
 5.  CA Certificates and CSRs
+
+See TODO.md for more details on planned Koans.
 
 This tries to prevent high-level tools and abstractions to get a better appreciation of how things are under the hood. However, while writing real-world crypto code, please use higher level abstractions such as `NaCl`.
 

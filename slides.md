@@ -14,6 +14,7 @@ footer: Razorpay
 -   `php -m |grep -e openssl -e curl`
 -   `composer --version` (See <https://getcomposer.org/download/>) (1.8.4)
 -   `docker --version` (18.09.2-ce)
+-   `libtasn` (`brew install libtasn1`) (4.13)
 
 ---
 
@@ -45,9 +46,11 @@ _class: lead
 
 # Non-Goals
 
--   Understanding all Crypto-Attacks (we'll discuss 2)
+-   Understanding all Crypto-Attacks (we'll discuss a couple)
 -   Elliptic Curve Crypto
 -   crypto-currencies :money_mouth_face:
+-   Math
+-   Intermediate Certs
 
 ---
 
@@ -65,11 +68,11 @@ _class: lead
 
 # Setup
 
-1. Have a browser open with Google (Lots of googling needed for this)
-2. `git clone git@github.com/captn3m0/crypto.koans.git && cd crypto.koans`
-3. `composer install`
-4. `vendor/bin/phpunit`
-5. `man openssl`, `man curl`
+1.  Have a browser open with Google (Lots of googling needed for this)
+2.  `git clone git@github.com/captn3m0/crypto.koans.git && cd crypto.koans`
+3.  `composer install`
+4.  `vendor/bin/phpunit`
+5.  `man openssl`, `man curl`
 
 🧘‍♀️🧘‍♂️
 
@@ -110,13 +113,14 @@ end
 
 # tl;dr
 
-1. Run tests
-2. Why is the test failing? (`koans/files` directories)
-3. Get it to pass
+1.  Run tests
+2.  Why is the test failing? (`koans/files` directories)
+3.  Get it to pass
 
 👌🏼 Don't Cheat
 
 -   ❗ Means you must do something here
+-   Keep a solutions.md file listing down commands as you run them
 
 ---
 
