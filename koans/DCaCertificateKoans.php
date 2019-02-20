@@ -66,7 +66,8 @@ class DCaCertificateKoans extends TestCase {
     }
 
     /**
-     * !Sign a certificate using ca.key as the CA
+     * !Sign a certificate using ca.key as the CA certificate
+     * and ca.pem as the CA key
      * and 1.csr as the signing request
      *
      * Keep the common name as crypto.koans
@@ -97,9 +98,98 @@ class DCaCertificateKoans extends TestCase {
     }
 
     /**
-     * Understand what is the difference
+     * !Read the google.pem certificate file and get the allowed purposes it has
+     *
+     * aside: The file was downloaded by the command
+     *
+     * openssl s_client -showcerts -connect google.com:443 </dev/null 2>/dev/null|openssl x509 -outform PEM > google.pem
+     *
+     * ! Then, fill the blanks (__) in the testcase below from what you just learnt
      */
+    function testGoogleCertificate() {
+        $crt = 'file://google.pem';
+
+        $this->assertPurpose($crt, X509_PURPOSE_SSL_CLIENT, 'files/ca.pem', __LINE__, __);
+        $this->assertPurpose($crt, X509_PURPOSE_SSL_SERVER, 'files/ca.pem', __LINE__, __);
+        $this->assertPurpose($crt, X509_PURPOSE_NS_SSL_SERVER, 'files/ca.pem', __LINE__, __);
+        $this->assertPurpose($crt, X509_PURPOSE_SMIME_SIGN, 'files/ca.pem', __LINE__, __);
+        $this->assertPurpose($crt, X509_PURPOSE_SMIME_ENCRYPT, 'files/ca.pem', __LINE__, __);
+        $this->assertPurpose($crt, X509_PURPOSE_CRL_SIGN, 'files/ca.pem', __LINE__, __);
+        $this->assertPurpose($crt, X509_PURPOSE_ANY, 'files/ca.pem', __LINE__, __);
+    }
+
+
+    /**
+     * Do the same as above, but for the certificate we just signed
+     * (1.crt)
+     */
+    function testOurCertificate() {
+        $crt = 'file://files/1.crt';
+
+        $this->assertPurpose($crt, X509_PURPOSE_SSL_CLIENT, 'files/ca.pem', __LINE__, __);
+        $this->assertPurpose($crt, X509_PURPOSE_SSL_SERVER, 'files/ca.pem', __LINE__, __);
+        $this->assertPurpose($crt, X509_PURPOSE_NS_SSL_SERVER, 'files/ca.pem', __LINE__, __);
+        $this->assertPurpose($crt, X509_PURPOSE_SMIME_SIGN, 'files/ca.pem', __LINE__, __);
+        $this->assertPurpose($crt, X509_PURPOSE_SMIME_ENCRYPT, 'files/ca.pem', __LINE__, __);
+        $this->assertPurpose($crt, X509_PURPOSE_CRL_SIGN, 'files/ca.pem', __LINE__, __);
+        $this->assertPurpose($crt, X509_PURPOSE_ANY, 'files/ca.pem', __LINE__, __);
+    }
+
+    /**
+     * Understand what is the difference between a client certificate and a server certificate
+     *
+     * Now that we know that server and client certificates are just flags on a x509 certificate, we
+     * can try to generate a purely client certificate:
+     *
+     * 1. Create a file called client.cnf in root directory
+     * 2. Write the following block in that file:
+     *
+     * ```
+     * keyUsage =
+     * extendedKeyUsage = clientAuth
+     * ```
+     *
+     * 3. Generate a key with no passphrase called client.key
+     * 4. Generate a CSR in files/client.csr (common name = `client.crypto.koans` (remember -subj))
+     * 5. Sign a certificate for files/client.key using ca.pem as the CA certificate
+     *    and ca.key as the ca.key (same as last test case), BUT:
+     * 6. Pass an extra `-extfile client.cnf` parameter
+     * 7. Save the new certificate in files/client.crt
+     */
+
     public function testGenerateClientCertificate() {
 
+        // Now let us validate our client certificate
+        $crt = 'file://files/client.crt';
+
+        $this->assertPurpose($crt, X509_PURPOSE_SSL_CLIENT, 'files/ca.pem', __LINE__, true);
+        $this->assertPurpose($crt, X509_PURPOSE_SSL_SERVER, 'files/ca.pem', __LINE__, false);
+        $this->assertPurpose($crt, X509_PURPOSE_NS_SSL_SERVER, 'files/ca.pem', __LINE__, false);
+        $this->assertPurpose($crt, X509_PURPOSE_SMIME_SIGN, 'files/ca.pem', __LINE__, false);
+        $this->assertPurpose($crt, X509_PURPOSE_SMIME_ENCRYPT, 'files/ca.pem', __LINE__, false);
+        $this->assertPurpose($crt, X509_PURPOSE_CRL_SIGN, 'files/ca.pem', __LINE__, false);
+        $this->assertPurpose($crt, X509_PURPOSE_ANY, 'files/ca.pem', __LINE__, true);
+    }
+
+    private function assertPurpose($certificate, $purpose, $ca, $line, $answer) {
+
+        $PURPOSES = [
+            '',
+            'the client side of an SSL connection',
+            'the server side of an SSL connection',
+            'Netscape SSL server',
+            'signing S/MIME email',
+            'encrypting S/MIME email',
+            'signing a certificate revocation list (CRL)',
+            'Any/All purposes',
+        ];
+        $purposeAllowed = openssl_x509_checkpurpose($certificate, $purpose, [$ca]);
+
+        if ($purposeAllowed !== $answer) {
+            $this->fail("Can the certificate $certificate be used for " . $PURPOSES[$purpose] . "? Check your answer on line $line");
+        }
+
+        // This double check is to avoid giving the answer in the testcase
+        $this->assertSame($purposeAllowed, $answer);
     }
 }
