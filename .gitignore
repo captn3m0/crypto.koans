@@ -2,3 +2,4 @@
 files/
 solutions.md
 *.cnf
+composer.lock
