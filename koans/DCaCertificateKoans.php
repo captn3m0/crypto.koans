@@ -25,7 +25,9 @@ class DCaCertificateKoans extends TestCase {
         $this->assertEquals('crypto.koans.invalid', $info['subject']['CN']);
 
         // If you'd like more details on what is this
-        // Search for Key Usage RFC
+        // See RFC 5280: https://tools.ietf.org/html/rfc5280#section-4.2.1.9
+        //
+        // ! See if you can get this verified using the openssl command line
         $this->assertEquals('CA:TRUE', $info['extensions']['basicConstraints']);
         $this->assertTrue(
             openssl_x509_check_private_key($cert, $key)

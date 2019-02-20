@@ -7,7 +7,7 @@ Expectations for learning. This is what you should learn after solving a koan.
 1. How are keys generated and stored?
 1. What is a CA Certificate
 1. Why is a Root CA Certificate Self-Signed?
-1. What is a Intermediate Certificate?
+1. ~~What is a Intermediate Certificate?~~
 1. What is a CSR? How do I generate one?
 1. What is a client Certificate and when is it used?
 1. What is the difference between a encryption and signing certificate?
