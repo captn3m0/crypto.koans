@@ -268,19 +268,26 @@ printf "extendedKeyUsage = clientAuth\nkeyUsage = " > client.cnf
 
 ## Step 2
 
-```haskell
+```bash
+# As Alice
 openssl req -subj '/CN=client.crypto.koans'
 -key files/client.key
 -new
 -out files/client.csr
-
-openssl x509 -req -in files/client.csr
+# As Bob
+openssl x509 -req -in files/alice.csr
 -CA files/ca.pem
 -CAkey files/ca.key
 -CAcreateserial
 -extfile client.cnf
--out files/client.crt
+-out files/alice.crt
 ```
+
+## Step 3
+
+1. Save alice.crt as `client.crt`
+2. Save the CA pem file as `bob.pem`
+3. See `testClientBundleGenerated`
 
 ---
 
@@ -288,11 +295,27 @@ openssl x509 -req -in files/client.csr
 
 ---
 
-# What you Have
+# What Alice Has
+
+1. Client (`client.key`, `client.csr`, `client.crt`)
+2. Bob's CA (`bob.pem`)
+
+# What Bob Has
 
 1. Server (`1.key`, `1.csr`, `1.crt`)
-2. Client (`client.key`, `client.csr`, `client.crt`)
-3. CA (`ca.key`, `CA.pem`)
+2. CA (`ca.pem`, `ca.key`)
+
+---
+
+# What Alice Has
+
+1. Client (`client.key`, `client.crt`)
+2. Bob's CA (`bob.pem`)
+
+# What Bob Has
+
+1. Server (`1.key`, `1.crt`)
+2. CA (`ca.pem`)
 
 ---
 

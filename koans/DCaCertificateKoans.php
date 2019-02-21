@@ -185,6 +185,18 @@ class DCaCertificateKoans extends TestCase {
         $this->assertPurpose($crt, X509_PURPOSE_ANY, 'files/bob.pem', __LINE__, true);
     }
 
+    /**
+     * !Generate a client bundle which contains your client.key and client certificate
+     *
+     * openssl pkcs12 -export -out files/bundle.pfx -inkey files/client.key -in files/client.crt -certfile files/bob.pem
+     *
+     * Then import it in your browser (Search for Certificate in your browser settings)
+     */
+    public function testClientBundleGenerated() {
+        $this->assertTrue(file_exists('files/bundle.pfx'));
+        // TODO: Test for a valid bundle
+    }
+
     private function assertPurpose($certificate, $purpose, $ca, $line, $answer) {
 
         $PURPOSES = [
