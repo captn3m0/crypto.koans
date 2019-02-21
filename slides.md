@@ -18,7 +18,7 @@ footer: Razorpay
 
 ---
 
-# <!--fit--> practical cryptography
+# <!--fit--> Practical PKI
 
 [_nemo_](nemo@razorpay.com)
 
@@ -51,6 +51,7 @@ _class: lead
 -   crypto-currencies :money_mouth_face:
 -   Math
 -   Intermediate Certs
+-   Cert Revocation
 
 ---
 
