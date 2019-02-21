@@ -260,17 +260,11 @@ printf "extendedKeyUsage=clientAuth\nkeyUsage=digitalSignature" > client.cnf
 
 # Generate a Client Certificate
 
-## Step 1
-
-```bash
-printf "extendedKeyUsage = clientAuth\nkeyUsage = " > client.cnf
-```
-
 ## Step 2
 
 ```bash
 # As Alice
-openssl req -subj '/CN=client.crypto.koans'
+openssl req -subj '/CN=alice.crypto.koans'
 -key files/client.key
 -new
 -out files/client.csr
@@ -283,15 +277,39 @@ openssl x509 -req -in files/alice.csr
 -out files/alice.crt
 ```
 
+---
+
+# Generate a Client Certificate
+
 ## Step 3
 
-1. Save alice.crt as `client.crt`
-2. Save the CA pem file as `bob.pem`
+1. Save `alice.crt` as `client.crt`
+2. Save the CA file you received as `bob.pem`
 3. See `testClientBundleGenerated`
 
 ---
 
 # Theory Break 2
+
+---
+
+# What Alice Had
+
+1. Client (`client.key`, `client.csr`)
+
+---
+
+# What Bob Had
+
+1. Client CSR (`client.csr`)
+2. CA (`ca.pem`, `ca.key`)
+
+---
+
+# What Bob Had
+
+1. Client CSR (`client.csr`, `alice.crt`)
+2. CA (`ca.pem`, `ca.key`)
 
 ---
 
@@ -315,10 +333,63 @@ openssl x509 -req -in files/alice.csr
 # What Bob Has
 
 1. Server (`1.key`, `1.crt`)
-2. CA (`ca.pem`)
+2. Bob's Own CA (`ca.pem`)
 
 ---
 
 # Where we're going
 
 # <!--fit--> :whale: :rocket:
+
+---
+
+# :whale: :one: / :two:
+
+## As Bob
+
+Bring up a server using your key (`1.key`) and certificate (`1.crt`) and allow any client signed
+by your CA (`ca.pem`) to talk to you.
+
+```bash
+docker run --volume `pwd`/files:/etc/koans
+--publish 8443:443
+captn3m0/crypto.koans
+```
+
+```
+# ssl_certificate /etc/koans/1.crt;
+# ssl_certificate_key /etc/koans/1.key;
+# ssl_client_certificate /etc/koans/ca.pem;
+# Give your WiFi IP to your partner
+```
+
+---
+
+# :whale: :two: / :two:
+
+## As Alice
+
+Use the certificate (signed by Bob) and the key
+(which only you have) to talk to Bob's server (which
+you can verify using the CA given)
+
+```bash
+curl https://server.crypto.koans.invalid:8443
+--resolve server.crypto.koans.invalid:8443:192.168.1.121
+--cert files/client.crt
+--key files/client.key
+--cacert files/bob.pem
+```
+
+```
+# /etc/hosts
+192.168.1.121 server.crypto.koans.invalid
+```
+
+---
+
+# Browser 🌍
+
+1. Import `bundle.pfx` in your browser
+2. Enable CA Usage for websites
+3. Open https://server.crypto.koans.invalid:8443

@@ -63,7 +63,7 @@ class DCaCertificateKoans extends TestCase {
 
         // The 'key' part only holds the public key
         $this->assertEquals($publicKeyDetails['key'], $privateKeyDetails['key']);
-        // THis is comparing the modulus
+        // This is comparing the modulus
         $this->assertEquals($publicKeyDetails['rsa']['n'], $privateKeyDetails['rsa']['n']);
     }
 
@@ -152,7 +152,7 @@ class DCaCertificateKoans extends TestCase {
      * ```
      *
      * 3. Generate a key with no passphrase called client.key
-     * 4. Generate a CSR in files/client.csr (common name = `client.crypto.koans` (remember -subj))
+     * 4. Generate a CSR in files/client.csr (common name = `YOURNAMEGOESHERE.crypto.koans` (remember -subj))
      * 5. Pass the client.csr file to the person next to you.
      *5b. Save the csr file you received to files/alice.csr
      * 5. Sign a certificate for alice.csr using ca.pem as the CA certificate
