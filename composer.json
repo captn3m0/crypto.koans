@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "consolidation/robo": "^1.0.0",
+        "consolidation/robo": "^2.0.2",
         "phpunit/phpunit": "^8"
     },
     "autoload": {
