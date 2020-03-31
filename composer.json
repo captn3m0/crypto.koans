@@ -11,7 +11,7 @@
     ],
     "require": {
         "consolidation/robo": "^1.0.0",
-        "phpunit/phpunit": "^8"
+        "phpunit/phpunit": "^9"
     },
     "autoload": {
         "psr-4": {
